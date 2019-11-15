@@ -1,0 +1,15 @@
+groups:
+- name: downrules
+  rules:
+  - alert: InstanceDown
+    expr: up < 1
+    for: 20s
+    labels:
+      #team: node
+      severity: warning
+      action: text
+      kind: node_export
+    annotations:
+      summary: "{{$labels.instance}}: has been down"
+      description: "{{$labels.instance}}: job {{$labels.job}} has been down "
+      value: "{{$value}}"

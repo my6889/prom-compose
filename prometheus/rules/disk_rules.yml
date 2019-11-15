@@ -1,0 +1,15 @@
+groups:
+- name: disk1rules
+  rules:
+  - alert: PartitionGenRunOut
+    expr: node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"} * 100 < 8 
+    for: 2m
+    labels:
+      #team: node
+      severity: warning
+      action: text
+      kind: node_export
+    annotations:
+      summary: "{{$labels.instance}}: 根分区可用空间过低"
+      description: "{{$labels.instance}}: {{$labels.job}} 根分区可用空间已不足8% "
+      value: "{{$value}}"

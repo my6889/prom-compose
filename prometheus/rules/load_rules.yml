@@ -1,0 +1,15 @@
+groups:
+- name: loadrules
+  rules:
+  - alert: ServerLoadTooHigh
+    expr: node_load5 > 2
+    for: 3m
+    labels:
+      #team: node
+      severity: warning
+      action: text
+      kind: node_export
+    annotations:
+      summary: "{{$labels.instance}}: load is too high"
+      description: "{{$labels.instance}}: job {{$labels.job}} lode_5 is more than 2 last 3min "
+      value: "{{$value}}"

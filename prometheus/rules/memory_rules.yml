@@ -1,0 +1,15 @@
+groups:
+- name: memoryrules
+  rules:
+  - alert: MemoryUsageTooHigh
+    expr: (1-node_memory_MemAvailable_bytes/node_memory_MemTotal_bytes) * 100 > 90
+    for: 2m
+    labels:
+      #team: node
+      severity: warning
+      action: text
+      kind: node_export
+    annotations:
+      summary: "{{$labels.instance}}: Memory usage is too high"
+      description: "{{$labels.instance}}: job {{$labels.job}} memory usage is more than 90% last 2min "
+      value: "{{$value}}"
