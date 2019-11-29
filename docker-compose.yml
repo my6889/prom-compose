@@ -14,7 +14,7 @@ services:
     depends_on:
       - alertmanager
   alertmanager:
-    image: prom/alertmanager:v0.14.0
+    image: prom/alertmanager:v0.19.0
     container_name: alertmanager
     volumes:
       - './alertmanager:/etc/alertmanager'
@@ -45,4 +45,4 @@ networks:
     ipam:
       driver: default
       config:
-      - subnet: "172.125.0.0/16"
+      - subnet: "172.18.18.0/24"
