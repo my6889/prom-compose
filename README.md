@@ -106,4 +106,4 @@ rm -r prom-compose
 * Grafana的数据卷挂载到了volume，volume默认名为`grafana-pv`，可以通过`docker volume ls`命令看到
 * `docker-compose.yml`中三个容器均设置了`restart=always`，可按需修改；网桥默认设置为`172.21.18.0/24`,如果有冲突请自行修改
 * Grafana Web登录默认账号密码为`admin/admin`，添加Prometheus数据源时，地址可以是`http://宿主机IP:9090`或`http://prometheus:9090`
-* 镜像版本：`prom/prometheus:v2.14.0`、`prom/alertmanager:v0.19.0`、`grafana/grafana:6.4.4`
+* 镜像版本：`prom/prometheus:v2.14.0`、`prom/alertmanager:v0.19.0`、`grafana/grafana:6.5.1`
