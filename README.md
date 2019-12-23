@@ -41,7 +41,7 @@ $ chmod +x /usr/local/bin/docker-compose
 **克隆项目**
 
 ```
-$ git clone http://git.socmap.org/sunshiwei/prom-compose.git
+$ git clone https://github.com/my6889/prom-compose
 $ cd prom-compose
 ```
 
@@ -53,6 +53,7 @@ $ vim alertmanager/alertmanager.yml
 
 * 设置配置文件中smtp发件邮箱`line3-6`
 * 设置接收报警邮件的邮箱`line23`
+* 设置邮件主题`line26`
 * 其余高阶配置请自行查找资料
 
 **修改告警规则配置**
