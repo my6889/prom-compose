@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   prometheus:
-    image: prom/prometheus:v2.14.0
+    image: prom/prometheus:v2.15.2
     container_name: prometheus
     volumes:
       - './prometheus/prometheus.yml:/etc/prometheus/prometheus.yml'
@@ -14,7 +14,7 @@ services:
     depends_on:
       - alertmanager
   alertmanager:
-    image: prom/alertmanager:v0.19.0
+    image: prom/alertmanager:v0.20.0
     container_name: alertmanager
     volumes:
       - './alertmanager:/etc/alertmanager'
@@ -24,7 +24,7 @@ services:
     networks:
       - prom
   grafana:
-    image: grafana/grafana:6.5.1
+    image: grafana/grafana:6.5.2-ubuntu
     container_name: grafana
     volumes:
       - 'grafana-pv:/var/lib/grafana'
