@@ -6,6 +6,7 @@ services:
     volumes:
       - './prometheus/prometheus.yml:/etc/prometheus/prometheus.yml'
       - './prometheus/rules:/etc/prometheus/rules'
+      - 'prom-tsdb:/promethues'
     ports:
       - 9090:9090
     restart: always
@@ -24,7 +25,7 @@ services:
     networks:
       - prom
   grafana:
-    image: grafana/grafana:6.6.2-ubuntu
+    image: grafana/grafana:6.6.2
     container_name: grafana
     volumes:
       - 'grafana-pv:/var/lib/grafana'
@@ -38,6 +39,8 @@ services:
 
 volumes:
   grafana-pv:
+    driver: local
+  prom-tsdb:
     driver: local
 
 networks:
