@@ -1,7 +1,10 @@
 version: '3.7'
 services:
   prometheus:
-    image: prom/prometheus:v2.16.0
+    image: prometheus:v2.16.0-90d
+    build:
+      context: ./prometheus
+      dockerfile: Dockerfile
     container_name: prometheus
     volumes:
       - './prometheus/prometheus.yml:/etc/prometheus/prometheus.yml'
