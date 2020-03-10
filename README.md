@@ -107,5 +107,6 @@ rm -r prom-compose
 * Grafana的挂载数据卷默认名称为`grafana-pv`; Prometheus的挂载数据卷默认名称为`prom-tsdb`,可以通过`docker volume ls`命令看到
 * `docker-compose.yml`中三个容器均设置了`restart=always`，可按需修改；网桥默认设置为`172.21.18.0/24`,如果有冲突请自行修改
 * Grafana Web登录默认账号密码为`admin/admin`，添加Prometheus数据源时，地址可以是`http://宿主机IP:9090`或`http://prometheus:9090`
-* 镜像版本：`prom/prometheus:v2.16.0`、`prom/alertmanager:v0.20.0`、`grafana/grafana:6.6.2`
+* 镜像版本：`prom/prometheus:v2.16.0`、`prom/alertmanager:v0.20.0`、`grafana/grafana:6.6.2` 
+* Prometheus数据存储时间已改为90天，如果需要调整，可以在`docker-compose.yml`中第18行修改
 
