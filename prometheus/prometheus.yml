@@ -35,3 +35,8 @@ scrape_configs:
         instance: sentry
     
 
+remote_write:
+  - url: "http://prom-pg-adapter:9201/write"
+
+remote_read:
+  - url: "http://prom-pg-adapter:9201/read"

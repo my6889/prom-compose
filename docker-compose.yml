@@ -6,13 +6,6 @@ services:
     volumes:
       - './prometheus/prometheus.yml:/etc/prometheus/prometheus.yml'
       - './prometheus/rules:/etc/prometheus/rules'
-      - 'prom-tsdb:/promethues'
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-      - '--web.console.templates=/usr/share/prometheus/consoles'
-      - '--storage.tsdb.retention.time=90d'
     ports:
       - 9090:9090
     restart: always
@@ -20,6 +13,7 @@ services:
       - prom
     depends_on:
       - alertmanager
+
   alertmanager:
     image: prom/alertmanager:v0.20.0
     container_name: alertmanager
@@ -30,8 +24,9 @@ services:
     restart: always
     networks:
       - prom
+
   grafana:
-    image: grafana/grafana:6.6.2
+    image: grafana/grafana:6.7.1
     container_name: grafana
     volumes:
       - 'grafana-pv:/var/lib/grafana'
@@ -43,10 +38,40 @@ services:
     depends_on:
       - prometheus
 
+  pg_prometheus:
+    image: timescale/pg_prometheus:0.2.2-pg11
+    container_name: pg_prometheus
+    environment:
+      POSTGRES_PASSWORD: mypasiworld
+    volumes:
+      - 'pgdata:/var/lib/postgresql/data'
+    ports:
+      - 5432:5432
+    restart: always
+    networks:
+      - prom
+
+  prom-pg-adapter:
+    image: timescale/prometheus-postgresql-adapter:0.6.0
+    container_name: prom-pg-adapter
+    command:
+      - '-pg-host=pg_prometheus'
+      - '-pg-password=mypasiworld'
+      - '-pg-prometheus-log-samples'
+    ports:
+      - 9201:9201
+    restart: always
+    networks:
+      - prom
+    depends_on:
+      - pg_prometheus
+
 volumes:
   grafana-pv:
     driver: local
   prom-tsdb:
+    driver: local
+  pgdata:
     driver: local
 
 networks:
