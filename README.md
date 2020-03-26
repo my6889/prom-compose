@@ -27,7 +27,7 @@ $ chmod +x /usr/local/bin/docker-compose
 ---
 
 ## 项目说明
-本项目通过docker-compose整合五个容器，分别为`prometheus`,`grafana`,`alertmanager`,`pg_prometheus`,`prometheus-postgresql-adapter`
+本项目通过docker-compose整合了三个容器，分别为`prometheus`,`grafana`,`alertmanager`
 
 **容器说明：**
 
@@ -36,10 +36,6 @@ prometheus：采集各个exporter的数据采集器
 grafana：可视化图形面板
 
 alertmanager：负责告警推送
-
-pg_prometheus：远程持久化存储prometheus数据的PostgreSQL数据库容器
-
-prometheus-postgresql-adapter：prometheus和pg_prometheus数据库中间的数据读写接口
 
 
 ---
@@ -112,7 +108,7 @@ rm -r prom-compose
 ## 其它说明
 
 * 项目中Prometheus和Alertmanager的配置会挂载到容器中
-* Grafana的挂载数据卷默认名称为`grafana-pv`; Prometheus的挂载数据卷默认名称为`prom-tsdb`; pg_prometheus的挂载数据卷默认名称为`pgdata`
+* Grafana的挂载数据卷默认名称为`grafana-pv`; Prometheus的挂载数据卷默认名称为`prom-tsdb`; 
 * `docker-compose.yml`中容器均设置了`restart=always`，可按需修改；网段默认设置为`172.21.18.0/24`,如果有冲突请自行修改
 * Grafana Web登录默认账号密码为`admin/admin`，添加Prometheus数据源时，地址可以是`http://宿主机IP:9090`或`http://prometheus:9090`
 

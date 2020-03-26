@@ -33,10 +33,3 @@ scrape_configs:
     - targets: ['192.168.199.101:9100']
       labels:
         instance: sentry
-    
-
-remote_write:
-  - url: "http://prom-pg-adapter:9201/write"
-
-remote_read:
-  - url: "http://prom-pg-adapter:9201/read"
