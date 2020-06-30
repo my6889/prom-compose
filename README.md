@@ -20,8 +20,8 @@ $ systemctl start docker
 **安装Docker-compose**
 
 ```
-$ sudo curl -L "https://wood-bucket.oss-cn-beijing.aliyuncs.com/Linux/docker-compose-Linux-x86_64" -o /usr/local/bin/docker-compose
-$ chmod +x /usr/local/bin/docker-compose
+$ sudo curl -L "https://wood-bucket.oss-cn-beijing.aliyuncs.com/Linux/Docker/docker-compose-Linux-x86_64-1.25.5" -o /usr/local/bin/docker-compose
+$ sudo chmod +x /usr/local/bin/docker-compose
 ```
 
 ---
@@ -36,7 +36,6 @@ prometheus：采集各个exporter的数据采集器
 grafana：可视化图形面板
 
 alertmanager：负责告警推送
-
 
 ---
 
