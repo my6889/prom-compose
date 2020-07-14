@@ -67,7 +67,7 @@ $ ls
 disk_rules.yml  down_rules.yml   load_rules.yml  memory_rules.yml
 ```
 
-这里给出了四项基本的告警规则，如果不满足需求，可自行修改或再添加
+这里给出了几个基本的告警规则，如果不满足需求，可自行修改或再添加
 
 **添加export被监控实例**
 

@@ -1,0 +1,11 @@
+groups:
+- name: ElasticsearchHealthyNodes 
+  rules:
+  - alert: ElasticsearchHealthyNodes
+    expr: elasticsearch_cluster_health_number_of_nodes < number_of_nodes
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Elasticsearch Healthy Nodes (instance {{ $labels.instance }})"
+      description: "Number Healthy Nodes less then number_of_nodes\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
