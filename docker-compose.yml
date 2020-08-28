@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   prometheus:
-    image: prom/prometheus:v2.19.2
+    image: prom/prometheus:v2.20.1
     container_name: prometheus
     volumes:
       - './prometheus/prometheus.yml:/etc/prometheus/prometheus.yml'
@@ -33,7 +33,7 @@ services:
       - prom
 
   grafana:
-    image: grafana/grafana:7.0.6
+    image: grafana/grafana:7.1.5
     container_name: grafana
     volumes:
       - 'grafana-pv:/var/lib/grafana'
