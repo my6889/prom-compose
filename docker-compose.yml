@@ -48,12 +48,8 @@ services:
   blackbox_exporter:
     image: prom/blackbox-exporter:v0.17.0
     container_name: blackbox_exporter
-    volumes:
-      - './blackbox_exporter:/config'
     ports:
       - 9115:9115
-    command:
-       - '--config.file=/config/blackbox.yml'
     restart: always
     networks:
       - prom

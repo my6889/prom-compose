@@ -9,4 +9,4 @@ groups:
     annotations:
       summary: "Elasticsearch Cluster Red (instance {{ $labels.instance }})"
       description: "Elastic Cluster Red status\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
-      RedValue: "{{ $value }}"
+      value: "{{ $color }}"

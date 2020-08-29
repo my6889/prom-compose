@@ -9,4 +9,4 @@ groups:
     annotations:
       summary: "Elasticsearch Healthy Nodes (instance {{ $labels.instance }})"
       description: "Number Healthy Nodes less then number_of_nodes\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
-      NumHealthyNode: "{{ $value }}"
+      value: "{{ $value }}"
