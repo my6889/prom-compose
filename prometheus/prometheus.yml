@@ -33,3 +33,38 @@ scrape_configs:
     - targets: ['192.168.199.101:9100']
       labels:
         instance: sentry
+
+  - job_name: 'blackbox_http'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]  # 模块对应 blackbox.yml
+    static_configs:
+      - targets:
+          - https://docs.foofish.cn
+          - https://harbor.socmap.net
+          - https://git.socmap.org
+          - https://docs.my6889.cn
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+      replacement: blackbox_exporter:9115
+
+  - job_name: blackbox_tcp
+    metrics_path: /probe
+    params:
+      module: [tcp_connect]
+    static_configs:
+      - targets:
+          - 117.158.142.121:58000
+          - 117.158.142.121:58011
+
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox_exporter:9115
