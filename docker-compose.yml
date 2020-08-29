@@ -45,6 +45,15 @@ services:
     depends_on:
       - prometheus
 
+  blackbox_exporter:
+    image: prom/blackbox-exporter:v0.17.0
+    container_name: blackbox_exporter
+    ports:
+      - 9115:9115
+    restart: always
+    networks:
+      - prom
+
 volumes:
   grafana-pv:
     driver: local

@@ -1,4 +1,4 @@
-# 一键部署Prometheus-Grafana-Alertmanager
+# 一键部署Prometheus-Grafana-Alertmanager-Blackbox_exporter
 
 ## 准备环境
 
@@ -20,14 +20,14 @@ $ systemctl start docker
 **安装Docker-compose**
 
 ```
-$ sudo curl -L "https://wood-bucket.oss-cn-beijing.aliyuncs.com/Linux/Docker/docker-compose-Linux-x86_64-1.25.5" -o /usr/local/bin/docker-compose
+$ sudo curl -L "https://wood-bucket.oss-cn-beijing.aliyuncs.com/Linux/Docker/docker-compose-Linux-x86_64-1.26.2" -o /usr/local/bin/docker-compose
 $ sudo chmod +x /usr/local/bin/docker-compose
 ```
 
 ---
 
 ## 项目说明
-本项目通过docker-compose整合了三个容器，分别为`prometheus`,`grafana`,`alertmanager`
+本项目通过docker-compose整合了三个容器，分别为`prometheus`,`grafana`,`alertmanager`，`blackbox_exporter`
 
 **容器说明：**
 
@@ -37,6 +37,8 @@ grafana：可视化图形面板
 
 alertmanager：负责告警推送
 
+blackbox_exporter: TCP/HTTP/SSH等协议的存活探测
+
 ---
 
 ## 部署指南
@@ -44,7 +46,7 @@ alertmanager：负责告警推送
 **克隆项目**
 
 ```
-$ git clone https://github.com/my6889/prom-compose
+$ git clone https://github.com/my6889/prom-compose -b dev
 $ cd prom-compose
 ```
 
@@ -62,20 +64,18 @@ $ vim alertmanager/alertmanager.yml
 **修改告警规则配置**
 
 ```
-$ cd prometheus/rules
-$ ls 
-disk_rules.yml  down_rules.yml   load_rules.yml  memory_rules.yml
+$ ls prometheus/rules
 ```
 
 这里给出了几个基本的告警规则，如果不满足需求，可自行修改或再添加
 
-**添加export被监控实例**
+**添加被监控实例**
 
 ```
 vim prometheus/prometheus.yml
 ```
 
-* 依照`line25-29`的格式修改或添加export实例
+* 依照`scrape_configs`下的定义格式，修改或添加export实例
 * 其余配置可按需修改，默认不用改
 
 **启动项目**
@@ -90,6 +90,7 @@ docker-compose up -d
 http://宿主机IP:3000    # Grafana
 http://宿主机IP:9090    # Prometheus
 http://宿主机IP:9093    # Alertmanager
+http://宿主机IP:9115    # Blackbox_exporter
 ```
 
 <font color=#FF0000 >**完全移除**</font> 
