@@ -1,0 +1,11 @@
+groups:
+  - name: http_down
+    rules:
+    - alert: 域名解析失败
+      expr: probe_success == 0
+      for: 2m
+      labels:
+        severity: "error"
+      annotations:
+        summary: "{{$labels.instance}} : 域名解析失败"
+        value: Down

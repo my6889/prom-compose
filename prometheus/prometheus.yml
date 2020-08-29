@@ -17,6 +17,8 @@ rule_files:
   - "rules/load_rules.yml"
   - "rules/memory_rules.yml"
   - "rules/disk_rules.yml"
+  - "rules/tcp_down.yml"
+  - "rules/http_down.yml"
 
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
@@ -40,17 +42,15 @@ scrape_configs:
       module: [http_2xx]  # 模块对应 blackbox.yml
     static_configs:
       - targets:
-          - https://docs.foofish.cn
-          - https://harbor.socmap.net
-          - https://git.socmap.org
-          - https://docs.my6889.cn
+        - https://www.baidu.com
+        - http://fanyi.youdao.com
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
       - source_labels: [__param_target]
         target_label: instance
       - target_label: __address__
-      replacement: blackbox_exporter:9115
+        replacement: blackbox_exporter:9115
 
   - job_name: blackbox_tcp
     metrics_path: /probe
@@ -58,8 +58,8 @@ scrape_configs:
       module: [tcp_connect]
     static_configs:
       - targets:
-          - 117.158.142.121:58000
-          - 117.158.142.121:58011
+        - 114.114.114.114:58000
+        - 192.168.1.200:5432
 
     relabel_configs:
       - source_labels: [__address__]
