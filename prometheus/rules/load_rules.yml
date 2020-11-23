@@ -1,15 +1,16 @@
 groups:
 - name: loadrules
   rules:
-  - alert: ServerLoadTooHigh
-    expr: node_load5 > 2
-    for: 3m
+  - alert: ServerCloseToOverLoad
+    expr: ( node_load5 / count(node_cpu_seconds_total{mode="idle"}) without (cpu,mode) ) > 0.9
+    for: 5m
     labels:
       #team: node
       severity: warning
       action: text
       kind: node_export
+      #cores: more8
     annotations:
       summary: "{{$labels.instance}}: load is too high"
-      description: "{{$labels.instance}}: job {{$labels.job}} lode_5 is more than 2 last 3min "
-      value: "{{$value}}"
+      description: "{{$labels.instance}}: job {{$labels.job}} load_5 is more than 90% last 5min "
+      value: "{{ $value }}"

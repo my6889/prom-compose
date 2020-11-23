@@ -2,13 +2,29 @@ groups:
 - name: memoryrules
   rules:
   - alert: MemoryUsageTooHigh
-    expr: (1-node_memory_MemAvailable_bytes/node_memory_MemTotal_bytes) > 0.9
-    for: 2m
+    expr: (1-node_memory_MemAvailable_bytes/node_memory_MemTotal_bytes) > 0.93
+    for: 5m
     labels:
+      #team: node
       severity: warning
       action: text
       kind: node_export
+      #mem: more24
     annotations:
       summary: "{{$labels.instance}}: Memory usage is too high"
-      description: "{{$labels.instance}}: job {{$labels.job}} memory usage is more than 90% last 2min "
+      description: "{{$labels.instance}}: job {{$labels.job}} memory usage is more than 93% last 5min "
       value: "{{humanizePercentage $value}}"
+
+      #  - alert: MemoryUsageTooHigh
+      #    expr: (1-node_memory_MemAvailable_bytes/node_memory_MemTotal_bytes) * 100 > 88
+      #    for: 5m
+      #    labels:
+      #      #team: node
+      #      severity: warning
+      #      action: text
+      #      kind: node_export
+      #      mem: less24
+      #    annotations:
+      #      summary: "{{$labels.instance}}: Memory usage is too high"
+      #      description: "{{$labels.instance}}: job {{$labels.job}} memory usage is more than 88% last 5min "
+      #      value: "{{$value}}"
