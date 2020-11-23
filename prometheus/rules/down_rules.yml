@@ -5,6 +5,7 @@ groups:
     expr: up < 1
     for: 20s
     labels:
+      #team: node
       severity: warning
       action: text
       kind: node_export
