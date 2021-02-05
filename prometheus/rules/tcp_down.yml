@@ -1,11 +1,11 @@
 groups:
   - name: tcp_down
     rules:
-    - alert: TCP地址解析失败
-      expr: probe_http_status_code != 200
+    - alert: 端口存活探测失败
+      expr: probe_success == 0
       for: 5m
       labels:
         severity: "error"
       annotations:
-        summary: "{{$labels.instance}} : TCP地址解析失败"
+        summary: "{{$labels.instance}} : 端口存活探测失败"
         value: Down
