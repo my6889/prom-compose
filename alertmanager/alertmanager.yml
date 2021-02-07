@@ -1,8 +1,8 @@
 global:
   resolve_timeout: 5m
-  smtp_smarthost: 'smtp.qq.com:465'
-  smtp_from: 'example@qq.com'
-  smtp_auth_username: 'example@qq.com'
+  smtp_smarthost: 'smtp.exmail.qq.com:465'
+  smtp_from: 'sendmail@example.com'
+  smtp_auth_username: 'sendmail@example.com'
   smtp_auth_password: '******'
 # wechat_api_url: 'https://qyapi.weixin.qq.com/cgi-bin/' # 企业微信地址
 
@@ -20,10 +20,10 @@ route:
 receivers:
 - name: 'email'
   email_configs:
-  - to: 'yourmail@example.com'  # 接收警报的email配置
+  - to: '001@example.com, 002@example.com, 003@example.com'  # 接收警报的email配置
     require_tls: false
     html: '{{ template "alert.html" . }}' # 设定邮箱的内容模板
-    headers: { Subject: "[WARNING] Alertmaneger告警提醒"} # 接收邮件的标题
+    headers: { Subject: "Alertmaneger告警提醒"} # 接收邮件的标题
     #  webhook_configs: # webhook配置
     #  - url: 'http://127.0.0.1:5001'
     #  send_resolved: true

@@ -48,6 +48,8 @@ services:
   blackbox_exporter:
     image: prom/blackbox-exporter:v0.18.0
     container_name: blackbox_exporter
+    volumes:
+      - ./blackbox_exporter:/etc/blackbox_exporter
     ports:
       - 9115:9115
     restart: always

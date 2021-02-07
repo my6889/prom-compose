@@ -20,7 +20,7 @@ $ systemctl start docker
 **安装Docker-compose**
 
 ```
-$ sudo curl -L "https://wood-bucket.oss-cn-beijing.aliyuncs.com/Linux/Docker/docker-compose-Linux-x86_64-1.26.2" -o /usr/local/bin/docker-compose
+$ sudo curl -L "https://wood-bucket.oss-cn-beijing.aliyuncs.com/Linux/Docker/docker-compose-Linux-x86_64-1.27.4" -o /usr/local/bin/docker-compose
 $ sudo chmod +x /usr/local/bin/docker-compose
 ```
 
@@ -46,7 +46,7 @@ blackbox_exporter: TCP/HTTP/SSH等协议的存活探测
 **克隆项目**
 
 ```
-$ git clone https://github.com/my6889/prom-compose -b dev
+$ git clone https://github.com/my6889/prom-compose
 $ cd prom-compose
 ```
 
