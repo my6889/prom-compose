@@ -4,6 +4,7 @@
                 <td>告警项</td>
                 <td>实例</td>
                 <td>告警阈值</td>
+				<td>备注</td>
                 <td>开始时间</td>
         </tr>
         {{ range $i, $alert := .Alerts }}
@@ -11,6 +12,7 @@
                         <td>{{ index $alert.Labels "alertname" }}</td>
                         <td>{{ index $alert.Labels "instance" }}</td>
                         <td>{{ index $alert.Annotations "value" }}</td>
+						<td>{{ index $alert.Labels "comment" }}</td>
                         <td>{{ ($alert.StartsAt.Add 28800e9).Format "2006-01-02 15:04:05" }}</td>
                 </tr>
         {{ end }}

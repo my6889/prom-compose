@@ -57,9 +57,15 @@ scrape_configs:
     params:
       module: [tcp_connect]
     static_configs:
-      - targets:
-        - 114.114.114.114:53
-
+      - targets: ['10.125.0.12:5100']
+        labels:
+          comment: service1
+      - targets: ['10.125.0.12:5101']
+        labels:
+          comment: service2
+      - targets: ['10.125.0.12:5102']
+        labels:
+          comment: service3
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
