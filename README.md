@@ -4,7 +4,7 @@
 
 * Docker
 * Docker-compose
-* Ubuntu 18.04
+* Ubuntu 18.04 或 Ubuntu 20.04
 
 **安装Docker**
 
@@ -20,7 +20,7 @@ $ systemctl start docker
 **安装Docker-compose**
 
 ```
-$ sudo curl -L "https://wood-bucket.oss-cn-beijing.aliyuncs.com/Linux/Docker/docker-compose-Linux-x86_64-1.27.4" -o /usr/local/bin/docker-compose
+$ sudo curl -L "https://wood-bucket.oss-cn-beijing.aliyuncs.com/Linux/Docker/docker-compose-Linux-x86_64-1.29.1" -o /usr/local/bin/docker-compose
 $ sudo chmod +x /usr/local/bin/docker-compose
 ```
 
