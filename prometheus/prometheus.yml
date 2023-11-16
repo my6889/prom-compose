@@ -23,53 +23,13 @@ rule_files:
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
 scrape_configs:
-  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: 'gitlab'
+  - job_name: 'pushgateway'
+    honor_labels: true
+    scheme: https
+    basic_auth:
+      username: ******
+      password: ******
     static_configs:
-    - targets: ['192.168.199.100:9100']
-      labels:
-       instance: gitlab
-
-  - job_name: 'sentry'
-    static_configs:
-    - targets: ['192.168.199.101:9100']
-      labels:
-        instance: sentry
-
-  - job_name: 'blackbox_http'
-    metrics_path: /probe
-    params:
-      module: [http_2xx]  # 模块对应 blackbox.yml
-    static_configs:
-      - targets:
-        - https://www.baidu.com
-        - http://fanyi.youdao.com
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: blackbox_exporter:9115
-
-  - job_name: blackbox_tcp
-    metrics_path: /probe
-    params:
-      module: [tcp_connect]
-    static_configs:
-      - targets: ['10.125.0.12:5100']
-        labels:
-          comment: service1
-      - targets: ['10.125.0.12:5101']
-        labels:
-          comment: service2
-      - targets: ['10.125.0.12:5102']
-        labels:
-          comment: service3
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: blackbox_exporter:9115
+      - targets: ['pushgateway:9091']
+    tls_config:
+      insecure_skip_verify: true

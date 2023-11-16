@@ -1,40 +1,31 @@
 global:
-  resolve_timeout: 5m
+  resolve_timeout: 3m
   smtp_smarthost: 'smtp.exmail.qq.com:465'
-  smtp_from: 'sendmail@example.com'
-  smtp_auth_username: 'sendmail@example.com'
+  smtp_from: '******@example.com'
+  smtp_auth_username: '******@example.com'
   smtp_auth_password: '******'
-# wechat_api_url: 'https://qyapi.weixin.qq.com/cgi-bin/' # 企业微信地址
 
-# 定义模板信心
 templates:
   - 'template/*.tmpl'
 
 route:
   group_by: ['alertname']
-  group_wait: 10s
-  group_interval: 10s
-  repeat_interval: 10m
-  receiver: 'email'
+  group_wait: 30s
+  group_interval: 30s
+  repeat_interval: 20m
+  receiver: 'webhook'
 
 receivers:
 - name: 'email'
   email_configs:
-  - to: '001@example.com, 002@example.com, 003@example.com'  # 接收警报的email配置
+  - to: 'someone@example.com'  # 接收警报的email配置
     require_tls: false
     html: '{{ template "alert.html" . }}' # 设定邮箱的内容模板
-    headers: { Subject: "Alertmaneger告警提醒"} # 接收邮件的标题
-    #  webhook_configs: # webhook配置
-    #  - url: 'http://127.0.0.1:5001'
-    #  send_resolved: true
-    #  wechat_configs: # 企业微信报警配置
-    #  - send_resolved: true
-    #    to_party: '1' # 接收组的id
-    #    agent_id: '1000002' # (企业微信-->自定应用-->AgentId)
-    #    corp_id: '******' # 企业信息(我的企业-->CorpId[在底部])
-    #    api_secret: '******' # 企业微信(企业微信-->自定应用-->Secret)
-    #    message: '{{ template "test_wechat.html" . }}' # 发送消息模板的设定
-# 一个inhibition规则是在与另一组匹配器匹配的警报存在的条件下，使匹配一组匹配器的警报失效的规则。两个警报必须具有一组相同的标签。
+    headers: { Subject: "***服务器状态告警提醒"} # 接收邮件的标题
+- name: 'webhook'
+  webhook_configs:
+    - url: 'http://alertmanager-webhook-adapter:8060/webhook/send?channel_type=weixin&token=******'
+
 inhibit_rules:
   - source_match:
       severity: 'critical'

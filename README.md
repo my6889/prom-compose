@@ -1,33 +1,16 @@
-# 一键部署Prometheus-Grafana-Alertmanager-Blackbox_exporter
+# Deploy Pushgateway with TLS and Basic Auth
 
 ## 准备环境
 
 * Docker
 * Docker-compose
-* Ubuntu 18.04 或 Ubuntu 20.04
+* Ubuntu 18.04 / Ubuntu 20.04 / Ubuntu 22.04
 
-**安装Docker**
-
-```
-# Ubuntu
-$ curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
-$ add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
-$ apt install docker-ce -y
-$ systemctl enable docker
-$ systemctl start docker
-```
-
-**安装Docker-compose**
-
-```
-$ sudo curl -L "https://wood-bucket.oss-cn-beijing.aliyuncs.com/Linux/Docker/docker-compose-Linux-x86_64-1.29.1" -o /usr/local/bin/docker-compose
-$ sudo chmod +x /usr/local/bin/docker-compose
-```
 
 ---
 
 ## 项目说明
-本项目通过docker-compose整合了三个容器，分别为`prometheus`,`grafana`,`alertmanager`，`blackbox_exporter`
+本项目通过docker-compose整合了三个容器，分别为`prometheus`,`grafana`,`alertmanager`
 
 **容器说明：**
 
@@ -37,79 +20,70 @@ grafana：可视化图形面板
 
 alertmanager：负责告警推送
 
-blackbox_exporter: TCP/HTTP/SSH等协议的存活探测
 
 ---
 
 ## 部署指南
+1.为pushgateway创建证书   
+参考：[参考此文进行签发](https://docs.foofish.cn/%E9%83%A8%E7%BD%B2OpenVPN%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%B9%B6%E7%AD%BE%E5%8F%91%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE/)
 
-**克隆项目**
-
+2.为pushgateway配置基础认证  
+```angular2html
+htpasswd -nBC 10 "" | tr -d ':\n'
 ```
-$ git clone https://github.com/my6889/prom-compose
-$ cd prom-compose
-```
+将加密后的口令填入pushgateway.yml文件中。
 
-**修改alertmanager配置**
+
+3.修改alertmanager配置
 
 ```
 $ vim alertmanager/alertmanager.yml
 ```
 
-* 设置配置文件中smtp发件邮箱`line3-6`
-* 设置接收报警邮件的邮箱`line23`
-* 设置邮件主题`line26`
-* 其余高阶配置请自行查找资料
+* 默认配置会将告警信息发送至[alertmanager-webhook-adapter](https://github.com/bougou/alertmanager-webhook-adapter)
+* 如果需要将告警信息发送至邮箱，请自行配置邮箱
 
-**修改告警规则配置**
+4.修改prometheus配置   
+在prometheus配置中写入pushgateway的认证用户和密码
 
-```
-$ ls prometheus/rules
-```
-
-这里给出了几个基本的告警规则，如果不满足需求，可自行修改或再添加
-
-**添加被监控实例**
-
-```
-vim prometheus/prometheus.yml
-```
-
-* 依照`scrape_configs`下的定义格式，修改或添加export实例
-* 其余配置可按需修改，默认不用改
-
-**启动项目**
+5.启动项目
 
 ```
 docker-compose up -d 
 ```
 
-**访问服务**
+6.在被监控服务器上安装Node-exporter并配置主动推送
 
+安装Node-exporter
+```angular2html
+$ curl -L "https://publish-1300014129.cos.ap-beijing.myqcloud.com/Others/node_exporter-1.6.1" -o /usr/local/bin/node_exporter
+$ chmod +x /usr/local/bin/node_exporter
+
+$ cat >> /etc/systemd/system/node_exporter.service <<EOF
+[Unit]
+Description=Node Exporter
+ 
+[Service]
+User=root
+ExecStart=/usr/local/bin/node_exporter --web.listen-address=":9100"
+ 
+[Install]
+WantedBy=default.target
+EOF
+
+$ systemctl daemon-reload
+$ systemctl enable node_exporter
+$ systemctl start node_exporter
+$ systemctl status node_exporter
 ```
-http://宿主机IP:3000    # Grafana
-http://宿主机IP:9090    # Prometheus
-http://宿主机IP:9093    # Alertmanager
-http://宿主机IP:9115    # Blackbox_exporter
+
+设置主动推送
+```angular2html
+crontab -e
 ```
 
-<font color=#FF0000 >**完全移除**</font> 
-
+```angular2html
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+* * * * * sleep 10; curl -s http://localhost:9100/metrics | curl -k --data-binary @- https://username:password@{your_pushgateway_address}/metrics/job/$HOSTNAME/instance/$HOSTNAME
 ```
-# 慎重操作
-docker-compose down -v 
-rm -r prom-compose
-```
-
----
-
-
-
-## 其它说明
-
-* 项目中Prometheus和Alertmanager的配置会挂载到容器中
-* Grafana的挂载数据卷默认名称为`grafana-pv`; Prometheus的挂载数据卷默认名称为`prom-tsdb`; 
-* `docker-compose.yml`中容器均设置了`restart=always`，可按需修改；网段默认设置为`172.21.18.0/24`,如果有冲突请自行修改
-* Grafana Web登录默认账号密码为`admin/admin`，添加Prometheus数据源时，地址可以是`http://宿主机IP:9090`或`http://prometheus:9090`
-
-

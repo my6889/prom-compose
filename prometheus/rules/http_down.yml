@@ -1,11 +1,11 @@
 groups:
   - name: http_down
     rules:
-    - alert: HTTP返回非200状态
-      expr:  probe_http_status_code != 200
+    - alert: 域名解析失败
+      expr: probe_success == 0
       for: 2m
       labels:
         severity: "error"
       annotations:
-        summary: "{{$labels.instance}} : HTTP返回非200状态"
+        summary: "{{$labels.instance}} : 域名解析失败"
         value: Down
