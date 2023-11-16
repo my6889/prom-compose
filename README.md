@@ -6,35 +6,20 @@
 * Docker-compose
 * Ubuntu 18.04 / Ubuntu 20.04 / Ubuntu 22.04
 
-
----
-
-## 项目说明
-本项目通过docker-compose整合了三个容器，分别为`prometheus`,`grafana`,`alertmanager`
-
-**容器说明：**
-
-prometheus：采集各个exporter的数据采集器
-
-grafana：可视化图形面板
-
-alertmanager：负责告警推送
-
-
 ---
 
 ## 部署指南
-1.为pushgateway创建证书   
-参考：[参考此文进行签发](https://docs.foofish.cn/%E9%83%A8%E7%BD%B2OpenVPN%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%B9%B6%E7%AD%BE%E5%8F%91%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE/)
+**1.为pushgateway创建证书**   
+[参考这篇文章进行签发](https://docs.foofish.cn/%E9%83%A8%E7%BD%B2OpenVPN%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%B9%B6%E7%AD%BE%E5%8F%91%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE/)
 
-2.为pushgateway配置基础认证  
+**2.为pushgateway配置基础认证**  
 ```angular2html
 htpasswd -nBC 10 "" | tr -d ':\n'
 ```
 将加密后的口令填入pushgateway.yml文件中。
 
 
-3.修改alertmanager配置
+**3.修改alertmanager配置**
 
 ```
 $ vim alertmanager/alertmanager.yml
@@ -43,16 +28,16 @@ $ vim alertmanager/alertmanager.yml
 * 默认配置会将告警信息发送至[alertmanager-webhook-adapter](https://github.com/bougou/alertmanager-webhook-adapter)
 * 如果需要将告警信息发送至邮箱，请自行配置邮箱
 
-4.修改prometheus配置   
+**4.修改prometheus配置**   
 在prometheus配置中写入pushgateway的认证用户和密码
 
-5.启动项目
+**5.启动项目**
 
 ```
 docker-compose up -d 
 ```
 
-6.在被监控服务器上安装Node-exporter并配置主动推送
+**6.在被监控服务器上安装Node-exporter并配置主动推送**
 
 安装Node-exporter
 ```angular2html
